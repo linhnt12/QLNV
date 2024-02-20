@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý nhân viên</title>
+</head>
+<body>
+  <h1>Quản lý nhân viên
+    <hr>
+  </h1>
+  <div id="nhanVienContainer"></div>
+  <button onclick="chinhSuaNhanVien()">Chỉnh sửa thông tin nhân viên</button>
+
+  <script>
+    class NhanVien {
+      constructor(maNV, hoTen, ngaySinh, phong, hsLuong) {
+        this.maNV = maNV;
+        this.hoTen = hoTen;
+        this.ngaySinh = ngaySinh;
+        this.phong = phong;
+        this.hsLuong = hsLuong;
+      }
+
+      // Method để cập nhật thông tin nhân viên
+      capNhatThongTin(maNV, hoTen, ngaySinh, phong, hsLuong) {
+        this.maNV = maNV;
+        this.hoTen = hoTen;
+        this.ngaySinh = ngaySinh;
+        this.phong = phong;
+        this.hsLuong = hsLuong;
+      }
+
+      // Method để hiển thị thông tin nhân viên
+      hienThiThongTin(containerId) {
+        const container = document.getElementById(containerId);
+        const nhanVienInfo = document.createElement('div');
+        nhanVienInfo.innerHTML = `
+          <h3>Mã NV: ${this.maNV}</h3>
+          <p>Họ và tên: ${this.hoTen}</p>
+          <p>Ngày sinh: ${this.ngaySinh}</p>
+          <p>Phòng ban: ${this.phong}</p>
+          <p>Hệ số lương: ${this.hsLuong}</p>
+          <hr>
+        `;
+        container.appendChild(nhanVienInfo);
+      }
+    }
+
+    let danhSachNhanVien = [];
+
+    // Hàm để tạo danh sách nhân viên
+    function taoDanhSachNhanVien() {
+      let soLuong = prompt("Nhập số lượng nhân viên: ");
+      danhSachNhanVien = [];
+      for (let i = 0; i < soLuong; i++) {
+        let maNV = prompt(`Nhập mã NV của nhân viên ${i + 1}: `);
+        let hoTen = prompt(`Nhập họ và tên của nhân viên ${i + 1}: `);
+        let ngaySinh = prompt(`Nhập ngày sinh của nhân viên ${i + 1}: `);
+        let phong = prompt(`Nhập phòng ban của nhân viên ${i + 1}: `);
+        let hsLuong = parseFloat(prompt(`Nhập hệ số lương của nhân viên ${i + 1}: `));
+        danhSachNhanVien.push(new NhanVien(maNV, hoTen, ngaySinh, phong, hsLuong));
+      }
+      hienThiDanhSachNhanVien('nhanVienContainer');
+    }
+
+    // Hàm để hiển thị danh sách nhân viên
+    function hienThiDanhSachNhanVien(containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      danhSachNhanVien.forEach(nv => nv.hienThiThongTin(containerId));
+    }
+
+    // Hàm chính để thực thi chương trình
+    function main() {
+      taoDanhSachNhanVien();
+    }
+
+    // Hàm để chọn nhân viên cần chỉnh sửa
+    function chinhSuaNhanVien() {
+      let maNVChinhSua = prompt("Nhập mã nhân viên cần chỉnh sửa: ");
+      let nhanVienCanChinhSua = danhSachNhanVien.find(nv => nv.maNV === maNVChinhSua);
+      if (nhanVienCanChinhSua) {
+        let maNV = prompt("Nhập mã NV mới: ");
+        let hoTen = prompt("Nhập họ và tên mới: ");
+        let ngaySinh = prompt("Nhập ngày sinh mới: ");
+        let phong = prompt("Nhập phòng ban mới: ");
+        let hsLuong = parseFloat(prompt("Nhập hệ số lương mới: "));
+        nhanVienCanChinhSua.capNhatThongTin(maNV, hoTen, ngaySinh, phong, hsLuong);
+        hienThiDanhSachNhanVien('nhanVienContainer');
+      } else {
+        alert("Không tìm thấy nhân viên có mã số này!");
+      }
+    }
+
+    // Gọi hàm main để chạy chương trình
+    main();
+  </script>
+</body>
+</html>
